@@ -81,6 +81,27 @@ export default {
     };
   },
   methods: {
+    removeDataById(id){
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            hospset.removeDataById(id).then(resp=>{
+              this.$message({
+                type:"success",
+                message:"删除成功"
+              }),
+              this.getPageInfo();
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+          });          
+        });
+    },
+
     empty(){
       this.searchObj = {};
       this.getPageInfo();
@@ -94,9 +115,7 @@ export default {
     getPageInfo(val = 1) {
       this.page = val;
       this.listLoading = true;
-      hospset
-        .getHospsetPage(this.page, this.limit, this.searchObj)
-        .then((resp) => {
+      hospset.getHospsetPage(this.page, this.limit, this.searchObj).then((resp) => {
           this.total = resp.data.total;
           this.list = resp.data.rows;
           this.listLoading = false;
