@@ -1,5 +1,19 @@
 <template>
   <div class="app-container">
+
+    <!-- 带条件的分页查询 -->
+    <el-form :inline="true" :model="searchObj" class="demo-form-inline">
+      <el-form-item label="医院名称">
+        <el-input v-model="searchObj.hosname" placeholder="医院名称"></el-input>
+      </el-form-item>
+      <el-form-item label="医院编号">
+        <el-input v-model="searchObj.hoscode" placeholder="医院编号"></el-input>
+      </el-form-item>
+     <el-button type="primary" @click="query()">查询</el-button>
+     <el-button type="primary" @click="empty()">清空</el-button>
+    </el-form>
+
+    <!-- 列表展示 -->
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -40,6 +54,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!-- 分页 -->
     <el-pagination
       :current-page="page"
@@ -66,14 +81,25 @@ export default {
     };
   },
   methods: {
+    empty(){
+      this.searchObj = {};
+      this.getPageInfo();
+    },
+
+    query(){
+      this.getPageInfo();
+    },
+
     // es6 新特性，可以在参数位置添加默认值
     getPageInfo(val = 1) {
       this.page = val;
+      this.listLoading = true;
       hospset
         .getHospsetPage(this.page, this.limit, this.searchObj)
         .then((resp) => {
           this.total = resp.data.total;
           this.list = resp.data.rows;
+          this.listLoading = false;
         });
     },
 
