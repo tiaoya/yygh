@@ -60,33 +60,39 @@ export default {
   methods: {
     saveOrUpdate(formName) {
       this.$refs[formName].validate((valid) => {
-
         if (valid) {
           this.saveBtnDisabled = true;
-          hospset.addHospital(this.hospset).then((resp) => {
-            this.$message.success("添加成功");
-            // 跳转列表页面
-            this.$router.push({ path: "/yygh/hospset/list" });
-          });
-        }else{
-          this.$message.error("表单填写有误")
+          if (!this.hospset.id) {
+            // 添加操作
+            hospset.addHospital(this.hospset).then((resp) => {
+              this.$message.success("添加成功");
+              // 跳转列表页面
+              this.$router.push({ path: "/yygh/hospset/list" });
+            });
+          } else {
+            // 修改操作
+            hospset.update(this.hospset).then(resp =>{
+              this.$message.success("修改成功");
+              // 跳转列表页面
+              this.$router.push({ path: "/yygh/hospset/list" });
+            })
+          }
+        } else {
+          this.$message.error("表单填写有误");
           return false;
         }
       });
     },
   },
-  
-  created(){
+
+  created() {
     // 这里取的就是路由里的 edit/:aid
-    if(this.$route.params && this.$route.params.aid){
+    if (this.$route.params && this.$route.params.aid) {
       var id = this.$route.params.aid;
-      hospset.detail(id).then(resp =>{
+      hospset.detail(id).then((resp) => {
         this.hospset = resp.data.item;
-      })
+      });
     }
-
-
-
   },
 };
 </script>

@@ -41,4 +41,13 @@ export default {
       })
     },
 
+    // 医院设置修改数据 
+    update(obj){
+      return request({
+        url:`${API}/update`,
+        method:'put',
+        data:obj
+      })
+    },
+
 }
