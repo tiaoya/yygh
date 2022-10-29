@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <!-- 带条件的分页查询 -->
     <el-form :inline="true" :model="searchObj" class="demo-form-inline">
       <el-form-item label="医院名称">
@@ -9,8 +8,8 @@
       <el-form-item label="医院编号">
         <el-input v-model="searchObj.hoscode" placeholder="医院编号"></el-input>
       </el-form-item>
-     <el-button type="primary" @click="query()">查询</el-button>
-     <el-button type="primary" @click="empty()">清空</el-button>
+      <el-button type="primary" @click="query()">查询</el-button>
+      <el-button type="primary" @click="empty()">清空</el-button>
     </el-form>
 
     <!-- 列表展示 -->
@@ -21,7 +20,10 @@
       border
       fit
       highlight-current-row
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55"> </el-table-column>
+
       <el-table-column label="序号" width="70" align="center">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
@@ -54,6 +56,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button type="primary" @click="batchDelete()">批量删除</el-button>
 
     <!-- 分页 -->
     <el-pagination
@@ -78,36 +81,71 @@ export default {
       listLoading: false,
       page: 1,
       limit: 3,
+      selection: [],
     };
   },
   methods: {
-    removeDataById(id){
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            hospset.removeDataById(id).then(resp=>{
-              this.$message({
-                type:"success",
-                message:"删除成功"
-              }),
-              this.getPageInfo();
-            })
-          }).catch(() => {
+    batchDelete() {
+      this.$confirm("此操作将永久删除这些文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+          var ids = [];
+          for (let i = 0; i < this.selection.length; i++) {
+            var obj = this.selection[i];
+            ids.push(obj.id);
+          }
+
+          hospset.batchDelete(ids).then((resp) => {
             this.$message({
-              type: 'info',
-              message: '已取消删除'
-          });          
+              type: "info",
+              message: "批量删除成功",
+            });
+            this.getPageInfo();
+          });
+        }).catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
     },
 
-    empty(){
+    handleSelectionChange(param) {
+      // console.log(param);// 代表的是: 那些选中行数据信息[是一个数组]
+      this.selection = param;
+    },
+
+    removeDataById(id) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          hospset.removeDataById(id).then((resp) => {
+            this.$message({
+              type: "success",
+              message: "删除成功",
+            }),
+              this.getPageInfo();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+
+    empty() {
       this.searchObj = {};
       this.getPageInfo();
     },
 
-    query(){
+    query() {
       this.getPageInfo();
     },
 
@@ -115,17 +153,18 @@ export default {
     getPageInfo(val = 1) {
       this.page = val;
       this.listLoading = true;
-      hospset.getHospsetPage(this.page, this.limit, this.searchObj).then((resp) => {
+      hospset
+        .getHospsetPage(this.page, this.limit, this.searchObj)
+        .then((resp) => {
           this.total = resp.data.total;
           this.list = resp.data.rows;
           this.listLoading = false;
         });
     },
 
-    handleCurrentChange(val){
-        this.getPageInfo(val);
-    }
-
+    handleCurrentChange(val) {
+      this.getPageInfo(val);
+    },
   },
 
   created() {

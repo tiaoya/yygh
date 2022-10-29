@@ -50,4 +50,14 @@ export default {
       })
     },
 
+    
+    // 批量删除设置 
+    batchDelete(ids){
+      return request({
+        url:`${API}/delete`,
+        method:'delete',
+        data:ids
+      })
+    },
+
 }
