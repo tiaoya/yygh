@@ -31,6 +31,14 @@ export default {
         method:'post',
         data : obj
       })
-    }
+    },
+    
+    // 修改回显 
+    detail(id){
+      return request({
+        url:`${API}/detail/${id}`,
+        method:'get'
+      })
+    },
 
 }

@@ -73,6 +73,15 @@ export const constantRoutes = [
         name: '医院设置添加',
         component: () => import('@/views/yygh/hospset/save'),
         meta: { title: '医院设置添加', icon: 'tree' }
+      },
+      {
+        // /:aid 是携带的变量参数
+        path: 'edit/:aid',
+        name: '医院设置修改',
+        component: () => import('@/views/yygh/hospset/save'),
+        meta: { title: '医院设置修改', icon: 'tree' },
+        hidden : true
+
       }
     ]
   },

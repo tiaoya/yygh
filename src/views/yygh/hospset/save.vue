@@ -75,6 +75,19 @@ export default {
       });
     },
   },
+  
+  created(){
+    // 这里取的就是路由里的 edit/:aid
+    if(this.$route.params && this.$route.params.aid){
+      var id = this.$route.params.aid;
+      hospset.detail(id).then(resp =>{
+        this.hospset = resp.data.item;
+      })
+    }
+
+
+
+  },
 };
 </script>
 
