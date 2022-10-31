@@ -30,16 +30,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="hosname" label="医院名称" width="180" />
-      <el-table-column prop="hoscode" label="医院编号" width="160" />
+      <el-table-column prop="hoscode" label="医院编号" width="120" />
       <el-table-column prop="apiUrl" label="地址" width="200" />
-      <el-table-column prop="contactsName" label="联系人" />
+      <el-table-column prop="contactsName" label="联系人" width="140" />
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
           {{ scope.row.status === 1 ? "可用" : "不可用" }}
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="300" align="center">
         <template slot-scope="scope">
           <router-link :to="'/yygh/hospset/edit/' + scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit"
@@ -52,6 +52,22 @@
             icon="el-icon-delete"
             @click="removeDataById(scope.row.id)"
             >删除</el-button
+          >
+          <el-button
+            v-if="scope.row.status == 1"
+            type="primary"
+            size="mini"
+            icon="el-icon-delete"
+            @click="lockHostSet(scope.row.id, 0)"
+            >锁定</el-button
+          >
+          <el-button
+            v-if="scope.row.status == 0"
+            type="danger"
+            size="mini"
+            icon="el-icon-delete"
+            @click="lockHostSet(scope.row.id, 1)"
+            >解锁</el-button
           >
         </template>
       </el-table-column>
@@ -85,18 +101,24 @@ export default {
     };
   },
   methods: {
+    lockHostSet(id,status){
+      hospset.updateStatus(id,status).then(resp=>{
+        this.getPageInfo();
+      })
+
+    },
     batchDelete() {
       this.$confirm("此操作将永久删除这些文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
+      })
+        .then(() => {
           var ids = [];
           for (let i = 0; i < this.selection.length; i++) {
             var obj = this.selection[i];
             ids.push(obj.id);
           }
-
           hospset.batchDelete(ids).then((resp) => {
             this.$message({
               type: "info",
@@ -104,7 +126,8 @@ export default {
             });
             this.getPageInfo();
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
             type: "info",
             message: "已取消删除",
@@ -113,7 +136,7 @@ export default {
     },
 
     handleSelectionChange(param) {
-      // console.log(param);// 代表的是: 那些选中行数据信息[是一个数组]
+      // console.log(param);// param 默认自带的参数 代表的是: 那些选中行数据信息[是一个数组]
       this.selection = param;
     },
 

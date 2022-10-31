@@ -60,4 +60,12 @@ export default {
       })
     },
 
+     // 修改医院状态
+     updateStatus(id,status){
+      return request({
+        url:`${API}/status/${id}/${status}`,
+        method:'put',
+      })
+    },
+
 }
