@@ -24,7 +24,7 @@ public class CodeGet {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         //gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setOutputDir("D:\\code\\yygh_parent\\service\\service_hosp"+"/src/main/java");
+        gc.setOutputDir("D:\\code\\yygh_parent\\service\\service_cmn"+"/src/main/java");
 
         gc.setServiceName("%sService");	//去掉Service接口的首字母I
         gc.setAuthor("zhong");
@@ -34,7 +34,7 @@ public class CodeGet {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3307/yygh_hosp");
+        dsc.setUrl("jdbc:mysql://localhost:3307/yygh_cmn");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
@@ -43,7 +43,7 @@ public class CodeGet {
 
         // 4、包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("hosp"); //模块名
+        pc.setModuleName("cmn"); //模块名
         pc.setParent("com.zhong.yygh");
 
         pc.setController("controller");
@@ -55,7 +55,7 @@ public class CodeGet {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("hospital_set");//表名
+        strategy.setInclude("dict");//表名
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//数据库表字段映射到实体的命名策略
