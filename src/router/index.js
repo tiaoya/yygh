@@ -85,6 +85,23 @@ export const constantRoutes = [
       }
     ]
   },
+  
+  {
+    path: '/yygh/cmn',
+    component: Layout,
+    redirect: '/yygh/cmn/list',
+    name: '字典信息管理',
+    meta: { title: '字典信息管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: '字典数据展示',
+        component: () => import('@/views/yygh/cmn/list'),
+        meta: { title: '字典数据展示', icon: 'table' }
+      }
+    ]
+  },
+
   {
     path: '/example',
     component: Layout,
