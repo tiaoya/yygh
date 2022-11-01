@@ -5,11 +5,7 @@ import com.zhong.yygh.cmn.service.DictService;
 import com.zhong.yygh.common.result.R;
 import com.zhong.yygh.model.cmn.Dict;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/cmn")
+@CrossOrigin
 public class DictController {
 
     @Autowired
