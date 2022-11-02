@@ -18,6 +18,15 @@
 
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
     </el-table>
+    <div class="el-toolbar">
+      <div class="el-toolbar-body" style="justify-content: flex-start">
+
+        <el-button type="text" @click="exportData"
+          ><i class="fa fa-plus" /> 导出</el-button
+        >
+
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -26,27 +35,31 @@ import dict from "@/api/dict.js";
 export default {
   data() {
     return {
-        list:[],
+      list: [],
     };
   },
-  methods:{
+  methods: {
+
+    exportData(){
+      // 这里的localhost 应该换成 niginx 所在的ip地址和端口号
+      window.open('http://localhost:9001/admin/cmn/download');
+    },
+
     /*
         console.log(row); 当前行数据
         console.log(treeNode);   
         console.log(resolve);  是一个函数,作用将当前的子元素挂载到当前元素下边
-    */ 
-    load(row,treeNode,resolve){
-        
-        dict.getDictList(row.id).then(resp=>{
-            resolve(resp.data.items);
-        })
-
-    }
+    */
+    load(row, treeNode, resolve) {
+      dict.getDictList(row.id).then((resp) => {
+        resolve(resp.data.items);
+      });
+    },
   },
 
   created() {
     dict.getDictList(1).then((resp) => {
-        this.list = resp.data.items;
+      this.list = resp.data.items;
     });
   },
 };
