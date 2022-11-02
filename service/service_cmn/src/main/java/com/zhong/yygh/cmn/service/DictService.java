@@ -4,6 +4,9 @@ package com.zhong.yygh.cmn.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhong.yygh.model.cmn.Dict;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -17,4 +20,6 @@ import java.util.List;
 public interface DictService extends IService<Dict> {
 
     List<Dict> getChildListByPid(Long pid);
+
+    void download(HttpServletResponse response) throws IOException;
 }
