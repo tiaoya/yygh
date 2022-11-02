@@ -22,7 +22,7 @@ public class StudentListener extends AnalysisEventListener<Student> {
     // 每解析excel 文件中的一行数据,都会调用一次 invoke 方法
     @Override
     public void invoke(Student student, AnalysisContext analysisContext) {
-//        System.out.println(student);
+        System.out.println(student);
         // 批量插入数据
 //        list.add(student);
 //        if (list.size() >= BATCH_COUNT){
