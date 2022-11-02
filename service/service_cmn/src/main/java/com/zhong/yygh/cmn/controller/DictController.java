@@ -2,6 +2,7 @@ package com.zhong.yygh.cmn.controller;
 
 
 import com.alibaba.excel.EasyExcel;
+import com.zhong.yygh.cmn.excel.StudentListener;
 import com.zhong.yygh.cmn.service.DictService;
 import com.zhong.yygh.common.result.R;
 import com.zhong.yygh.model.cmn.Dict;
@@ -9,6 +10,7 @@ import com.zhong.yygh.vo.cmn.DictEeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,6 +32,13 @@ public class DictController {
 
     @Autowired
     private DictService dictService;
+
+    @PostMapping("/upload")
+    public R upload(MultipartFile file) throws IOException {
+        dictService.upload(file);
+        return R.ok();
+    }
+
 
     @GetMapping("/download")
     public void download(HttpServletResponse response) throws IOException {

@@ -3,6 +3,7 @@ package com.zhong.yygh.cmn.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhong.yygh.model.cmn.Dict;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,4 +23,6 @@ public interface DictService extends IService<Dict> {
     List<Dict> getChildListByPid(Long pid);
 
     void download(HttpServletResponse response) throws IOException;
+
+    void upload(MultipartFile file) throws IOException;
 }
